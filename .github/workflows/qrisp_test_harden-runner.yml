@@ -1,5 +1,5 @@
 
-name: Qrisp unit tests via Pytest
+name: Qrisp unit tests via Pytest - harden-runner
 
 on:
   push:
@@ -38,4 +38,4 @@ jobs:
           pip install git+https://github.com/tqec/tqecd.git 
       - name: Test with pytest
         run: |
-          pytest
+          pytest --durations=10 --durations-min=1.0
