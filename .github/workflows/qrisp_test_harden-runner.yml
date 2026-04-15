@@ -1,0 +1,41 @@
+
+name: Qrisp unit tests via Pytest
+
+on:
+  push:
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      matrix:
+        python-version: ["3.11.*"]
+
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@v5
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest qiskit-aer qiskit-iqm pyscf stim cirq xdsl
+          pip install -e ./
+          pip install --upgrade pennylane-catalyst gast
+          pip install git+https://github.com/tqec/tqecd.git 
+      - name: Test with pytest
+        run: |
+          pytest
