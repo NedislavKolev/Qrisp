@@ -14,3 +14,18 @@ disable = ["import-error"]
 [tool.black]
 line-length = 88
 target-version = ["py311", "py312", "py313"]
+
+[dependency-groups]
+test = [
+"pytest",
+"pytest-xdist",
+"qiskit-aer",
+"qiskit-iqm",
+"pyscf",
+"stim",
+"cirq",
+"xdsl",
+"pennylane-catalyst",
+"gast",
+"tqecd @ git+https://github.com/tqec/tqecd.git"
+]
