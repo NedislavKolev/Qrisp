@@ -1,4 +1,4 @@
-name: Qrisp unit tests via Pytest - xdist + cache
+name: Qrisp unit tests via Pytest - xdist + cache with pyproject dependencies
 
 on:
   push:
