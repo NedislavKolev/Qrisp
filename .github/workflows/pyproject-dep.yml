@@ -43,4 +43,4 @@ jobs:
           pip install --group test
 
       - name: Run tests with pytest
-        run: pytest -n auto --deselect=tests/operators_tests/test_qubit_hamiltonian_simulation.py::test_qubit_hamiltonian_simulation
+        run: pytest -n auto
