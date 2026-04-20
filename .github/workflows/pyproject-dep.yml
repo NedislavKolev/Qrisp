@@ -43,4 +43,4 @@ jobs:
           pip install --group test
 
       - name: Run tests with pytest
-        run: pytest -n auto --durations=0 --durations-min=0
+        run: pytest -n auto --durations=20
