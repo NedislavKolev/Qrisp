@@ -16,6 +16,7 @@ line-length = 88
 target-version = ["py311", "py312", "py313"]
 
 [dependency-groups]
+#pip install --group test
 test = [
 "pytest",
 "pytest-xdist",
