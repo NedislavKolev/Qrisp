@@ -43,9 +43,4 @@ jobs:
           pip install --group test
 
       - name: Run tests with pytest
-        run: pytest -n auto \
-          --deselect=tests/operators_tests/test_qubit_hamiltonian_simulation.py::test_qubit_hamiltonian_simulation \
-          --deselect=tests/primitives_tests/arithmetic_tests/test_remaud_adder.py::test_remaud_adder \
-          --deselect=tests/jax_tests/test_HHL_demo.py::test_HHL_demo \
-          --deselect=tests/primitives_tests/arithmetic_tests/test_modular_arithmetic.py::test_modular_arithmetic \
-          --deselect=tests/algorithms_tests/qaoa_tests/test_QAOA_TQA_warm_start.py::test_TQA_warmstart
+        run: pytest -n auto --deselect=tests/operators_tests/test_qubit_hamiltonian_simulation.py::test_qubit_hamiltonian_simulation
