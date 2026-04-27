@@ -43,4 +43,4 @@ jobs:
           pip install --group test
 
       - name: Run tests with pytest
-        run: pytest -n auto
+        run: pytest -n auto # -n auto allows us to paralleize the unit tests across multiple runners
