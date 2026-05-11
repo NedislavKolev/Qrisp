@@ -22,7 +22,7 @@ test = [
 "pytest-xdist<=3.8.0",
 "qiskit-aer<=0.17.2",
 "qiskit-iqm<=18.2",
-"pyscf<=2.13.0",
+"pyscf<=2.13.0; platform_system != 'Windows'",
 "stim<=1.15.0",
 "cirq<=1.6.1",
 "xdsl<=0.62.1",
