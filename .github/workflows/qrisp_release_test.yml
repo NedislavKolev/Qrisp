@@ -51,6 +51,7 @@ jobs:
 
       - name: Run tests on Windows
         if: runner.os == 'Windows'
+        shell: bash
         working-directory: ${{ github.workspace }}
         run: pytest -vv -x -s -n auto ./tests \
           --ignore=tests/interface_tests/test_converter_qrisp_to_qml.py \
