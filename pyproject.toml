@@ -11,6 +11,9 @@ profile = "black"
 [tool.pylint. messages_control]
 disable = ["import-error"]
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
 [tool.black]
 line-length = 88
 target-version = ["py311", "py312", "py313"]
