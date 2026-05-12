@@ -53,6 +53,6 @@ jobs:
         if: runner.os == 'Windows'
         shell: bash
         working-directory: ${{ github.workspace }}
-        run: pytest -vv -x -s -n auto ./tests \
+        run: pytest -vv -n auto ./tests \
           --ignore=tests/interface_tests/test_converter_qrisp_to_qml.py \
           --ignore=tests/jax_tests/test_catalyst_interface.py
