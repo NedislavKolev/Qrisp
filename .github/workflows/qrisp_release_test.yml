@@ -51,5 +51,4 @@ jobs:
 
       - name: Run tests on Windows
         if: runner.os == 'Windows'
-        shell: bash
         run: pytest -n auto
