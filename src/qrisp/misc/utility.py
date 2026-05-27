@@ -19,6 +19,7 @@
 import functools
 import traceback
 
+import jax
 import jax.numpy as jnp
 import numpy as np
 import sympy
@@ -109,7 +110,7 @@ def array_as_int(array):
 
 # Decomposes the circuit qc until no more decompositions are possible and then counts
 # the cnot operations
-def cnot_count(qc):
+def cnot_count(qc) -> int:
     qc = qc.transpile()
 
     gate_count_dic = qc.count_ops()
@@ -129,7 +130,9 @@ def is_inv(x, bit):
     return bool(int(x) % 2)
 
 
-def get_depth_dic(qc, transpile_qc=True, depth_indicator=lambda x: 1):
+# TODO: This should be fixed/improved (for example, it should always return a dict
+# and the type hint should be updated accordingly).
+def get_depth_dic(qc, transpile_qc=True, depth_indicator=lambda x: 1) -> dict:
     if len(qc.qubits) == 0:
         return {}
 
@@ -1578,12 +1581,12 @@ def redirect_qfunction(function_to_redirect):
         else:
 
             qargs = [
-                    arg
-                    for arg in list(args) + [target]
-                    if isinstance(arg, (QuantumVariable, QuantumArray))
-                    ]
+                arg
+                for arg in list(args) + [target]
+                if isinstance(arg, (QuantumVariable, QuantumArray))
+            ]
             merge(qargs)
-                
+
             env = QuantumEnvironment()
             env.manual_allocation_management = True
             qs = target.qs
@@ -2408,7 +2411,7 @@ def batched_measurement(variables, backend, shots=None):
     return results
 
 
-def _bitrev_indices(n: ArrayLike) -> jnp.ndarray:
+def _bitrev_indices(n: ArrayLike) -> jax.Array:
     """Return array r where r[j] = bitreverse(j) over n bits."""
     idx = jnp.arange(1 << n, dtype=jnp.uint32)
     rev = jnp.zeros_like(idx)
@@ -2417,7 +2420,7 @@ def _bitrev_indices(n: ArrayLike) -> jnp.ndarray:
     return rev
 
 
-def swap_endianness(vec: ArrayLike, n: ArrayLike) -> jnp.ndarray:
+def swap_endianness(vec: ArrayLike, n: ArrayLike) -> jax.Array:
     """
     Convert between big-endian and little-endian qubit ordering.
 
@@ -2432,7 +2435,7 @@ def swap_endianness(vec: ArrayLike, n: ArrayLike) -> jnp.ndarray:
 
     Returns
     -------
-    jnp.ndarray
+    jax.Array
         The state vector with reversed qubit ordering.
     """
     r = _bitrev_indices(n)
