@@ -16,9 +16,16 @@
 ********************************************************************************
 """
 
-from qrisp import QuantumString
+from .from_array import build_from_array
+from .from_eye import build_from_eye
+from .from_lcu import build_from_lcu
+from .from_operator import build_from_operator
+from .from_projector import build_from_projector
 
-q_str = QuantumString(size = len("hello world"))
-q_str[:] = "hello world"
-
-print(q_str)
+__all__ = [
+    "build_from_array",
+    "build_from_eye",
+    "build_from_lcu",
+    "build_from_operator",
+    "build_from_projector",
+]
