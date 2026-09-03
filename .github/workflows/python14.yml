@@ -12,6 +12,7 @@ on:
   push:
     branches:
       - main
+      - Add_support_for_Python_3.14
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
