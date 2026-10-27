@@ -12,6 +12,7 @@ on:
   push:
     branches:
       - main
+      - check_new_ubuntu_version
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -26,7 +27,7 @@ jobs:
     name: ruff lint (reviewdog)
     # Runs on PRs only, and the reviewdog step is gated on changes under src/.
     if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
@@ -67,7 +68,7 @@ jobs:
 
   format:
     name: ruff format
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
