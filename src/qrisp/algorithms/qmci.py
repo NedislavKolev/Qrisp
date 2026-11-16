@@ -27,7 +27,8 @@ def uniform(*args):
 
 def QMCI(qargs, function, distribution=None, mes_kwargs={}):
     r"""Implements a general algorithm for `Quantum Monte Carlo Integration <https://www.nature.com/articles/s41598-024-61010-9>`_.
-    This implementation utilizes :ref:`IQAE`. A detailed explanation can be found in the `QMCI tutorial <https://www.qrisp.eu/general/tutorial/QMCItutorial.html>`_.
+    This implementation utilizes :ref:`IQAE`. A detailed explanation can be found in the
+    :doc:`QMCI tutorial </general/tutorial/QMCItutorial>`.
 
     QMCI performs numerical integration of (high-dimensional) functions w.r.t. probability distributions:
 
@@ -80,7 +81,8 @@ def QMCI(qargs, function, distribution=None, mes_kwargs={}):
         sum((i/N)**2 for i in range(N))/N
         # Yields: 0.2734375
 
-    A detailed explanation of QMCI and its implementation in Qrisp can be found in the `QMCI tutorial <https://www.qrisp.eu/general/tutorial/QMCItutorial.html>`_.
+    A detailed explanation of QMCI and its implementation in Qrisp can be found in the
+    :doc:`QMCI tutorial </general/tutorial/QMCItutorial>`.
 
     """
     if distribution == None:

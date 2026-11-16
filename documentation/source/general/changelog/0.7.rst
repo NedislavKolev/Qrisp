@@ -55,8 +55,8 @@ New Tutorials
 
 Next to a major visual revamp of the :ref:`tutorial` page, the following tutorials have been added.
 
-* A `tutorial about implementing the HHL algorithm using Jasp <https://www.qrisp.eu/general/tutorial/HHL.html>`_.
-* A `tutorial about creating your own Jasp implementation of QAOA <https://www.qrisp.eu/general/tutorial/JaspQAOAtutorial.html>`_ from scratch.
+* A :doc:`tutorial about implementing the HHL algorithm using Jasp </general/tutorial/HHL>`.
+* A :doc:`tutorial about creating your own Jasp implementation of QAOA </general/tutorial/JaspQAOAtutorial>` from scratch.
 
 UI Changes
 ----------

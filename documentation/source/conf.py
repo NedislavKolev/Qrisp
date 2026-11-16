@@ -29,6 +29,7 @@
 #
 import os
 import sys
+import tomllib
 import warnings
 
 sys.path.insert(0, os.path.abspath("../../src/qrisp"))
@@ -54,6 +55,28 @@ warnings.filterwarnings("ignore", message=r".*os\.fork.*", category=RuntimeWarni
 
 project = ""
 copyright = "2026, Qrisp developers"
+
+# The version is read from the pyproject.toml of this checkout rather than from
+# an installed ``qrisp`` package, so the documentation always states the version
+# of the source it is built from. ``release`` is the full version ("0.9.10"),
+# ``version`` its X.Y part ("0.9").
+with open(os.path.abspath("../../pyproject.toml"), "rb") as _pyproject:
+    release = tomllib.load(_pyproject)["project"]["version"]
+version = ".".join(release.split(".")[:2])
+
+# Shown in the title of every page. Without it Sphinx would build the title from
+# the (empty) project name.
+html_title = f"Qrisp {release} documentation"
+
+# -- Multi-version documentation ---------------------------------------------
+
+# The website hosts one build per released version plus one of the development
+# version, each below https://qrisp.eu/en/<docs version>/. The build of the whole
+# site sets QRISP_DOCS_VERSION to the URL segment of the version being built:
+# "latest" for the development version, the release tag ("0.9") otherwise.
+# Without the variable (``make html``, Read the Docs previews) a stand-alone
+# build without version switcher is produced.
+docs_version = os.environ.get("QRISP_DOCS_VERSION", "")
 
 
 # -- General configuration ---------------------------------------------------
@@ -130,7 +153,16 @@ nbsphinx_timeout = 60
 
 master_doc = "index"
 
-html_baseurl = "https://qrisp.eu"
+# Root URL of this build. The trailing slash is required: canonical links and
+# the sitemap append the page path to it.
+html_baseurl = "https://qrisp.eu/"
+if docs_version:
+    html_baseurl += f"en/{docs_version}/"
+
+# sphinx-sitemap prefixes every page path with the language and the version by
+# default. html_baseurl already is the root of this build, so only the page path
+# is appended.
+sitemap_url_scheme = "{link}"
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -141,7 +173,10 @@ html_baseurl = "https://qrisp.eu"
 
 html_context = {
     # ...
-    "default_mode": "light"
+    "default_mode": "light",
+    # Used by the templates in _templates
+    "docs_version": docs_version,
+    "docs_baseurl": html_baseurl,
 }
 
 
@@ -176,7 +211,27 @@ html_theme_options = {
         "dynamic_sidebar.html",
         "thebe_button.html",
     ],
+    "footer_start": ["copyright", "docs-version", "sphinx-version"],
 }
+
+if docs_version:
+    # All builds share the versions.json at the root of the website, two levels
+    # above the root of this build. It is written when the site is assembled, so
+    # the theme cannot check it at build time.
+    html_theme_options["switcher"] = {
+        "json_url": "../../versions.json",
+        "version_match": docs_version,
+    }
+    html_theme_options["check_switcher"] = False
+    # Banner on every build other than the stable release
+    html_theme_options["show_version_warning_banner"] = True
+    # Next to the logo, the only place where the header has room left for it.
+    # Narrow screens have no room there either, so a second copy is added to
+    # navbar_end, whose items also appear in the navigation drawer. custom09.css
+    # hides the copy that does not apply.
+    html_theme_options["navbar_start"] = ["navbar-logo", "version-switcher"]
+    html_theme_options["navbar_end"] = ["version-switcher", "navbar-icon-links"]
+
 html_sidebars = {
     "**": ["sidebar-nav-bs"],
     "index": [],

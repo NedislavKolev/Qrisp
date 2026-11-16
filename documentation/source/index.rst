@@ -347,7 +347,7 @@ Qrisp enables developers to express quantum algorithms in substantially fewer li
          print(res)
          #Yields: {12: 1.0}
 
-Beyond simple arithmetic, our :ref:`tutorial` demonstrates a complete implementation of Shor's algorithm using `Montgomery reduction <https://en.wikipedia.org/wiki/Montgomery_modular_multiplication>`_, fully agnostic to the choice of quantum adder. The implementation manages several distinct :ref:`QuantumVariables <QuantumVariable>`, whose qubits are automatically disentangled and recycled across function calls. This approach :ref:`significantly reduces <shor_benchmark_plot>` resource requirements compared to existing open-source implementations, while remaining `accessible and well-documented <https://www.qrisp.eu/general/tutorial/Shor.html>`_.
+Beyond simple arithmetic, our :ref:`tutorial` demonstrates a complete implementation of Shor's algorithm using `Montgomery reduction <https://en.wikipedia.org/wiki/Montgomery_modular_multiplication>`_, fully agnostic to the choice of quantum adder. The implementation manages several distinct :ref:`QuantumVariables <QuantumVariable>`, whose qubits are automatically disentangled and recycled across function calls. This approach :ref:`significantly reduces <shor_benchmark_plot>` resource requirements compared to existing open-source implementations, while remaining :doc:`accessible and well-documented </general/tutorial/Shor>`.
 
 This example demonstrates how high-level quantum programming enables novel, scalable solutions to complex problems - and underscores the role that structured languages will play in the future of quantum computing.
 

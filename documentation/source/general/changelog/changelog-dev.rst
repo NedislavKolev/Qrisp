@@ -877,6 +877,17 @@ Development
   version badge linked to the PyPI project page
   (`PR #921 <https://github.com/eclipse-qrisp/Qrisp/pull/921>`_).
 
+* Prepared the documentation for hosting one build per released version plus
+  the development version. Every page now states the Qrisp version it was
+  built from, in its title, its footer and its metadata; the version is read
+  from ``pyproject.toml``. A build with ``QRISP_DOCS_VERSION`` set adds a
+  version switcher and a banner on every version other than the stable
+  release, and uses ``https://qrisp.eu/en/<version>/`` as its base URL. The
+  notebook download link is now relative, and the links to tutorials in the
+  ``.rst`` pages and docstrings are internal references, so they stay within
+  the version they belong to. The sitemap no longer lists malformed URLs
+  (`Issue #818 <https://github.com/eclipse-qrisp/Qrisp/issues/818>`_).
+
 Dependency Upgrades
 -------------------
 
