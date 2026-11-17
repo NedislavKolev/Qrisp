@@ -19,6 +19,7 @@ on:
       - ready_for_review
     branches:
       - main
+      - Build-and-host-documentation-for-all-released-Qrisp-versions-+-development-version
     # The documentation of the checkout itself is already built for pull
     # requests by Read the Docs. Pull requests rebuild the website only when
     # they change how it is built.
