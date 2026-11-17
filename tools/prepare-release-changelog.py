@@ -23,6 +23,8 @@ Workflow
    (e.g. 0.8.2 → 0.9.0).
 2. Run ``make release-notes`` (or ``python tools/prepare-release-changelog.py``).
 3. Review with ``git diff`` and commit.
+4. After the release has been tagged, add it to the documentation website as
+   described in ``documentation/README.md`` ("Adding a release").
 
 The script reads the current version from ``pyproject.toml``, archives
 ``changelog-dev.rst`` as ``<version>.rst`` (removing the in-development

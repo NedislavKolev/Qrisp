@@ -53,6 +53,11 @@ preview it with:
     python -m http.server --directory build/site
 ```
 
+The workflow `.github/workflows/docs_site.yml` builds the website on every push
+to `main`, one job per version, and uploads it as the artifact `docs-site`.
+Pull requests rebuild it only when they change `build_versions.py`, `versions/`
+or the workflow. Deploying the artifact to qrisp.eu is not automated yet.
+
 How it works:
 - `versions/versions.toml` lists the versions and how each one is built.
 - A release is built from its git tag, in its own environment. Its dependencies
@@ -76,3 +81,7 @@ After tagging a release, for example 0.10:
    comments there.
 2. Run `python build_versions.py lock 0.10` and commit `versions/0.10.lock`.
 3. Set `stable = "0.10"` in `versions/versions.toml`.
+
+The same steps are in the Development Guide of the documentation. If a release
+is later patched, for example as 0.10.1, set `tag = "0.10.1"` in its table, so
+that the documentation of 0.10 is built from the patch release.

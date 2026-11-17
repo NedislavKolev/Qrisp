@@ -71,7 +71,21 @@ html_theme_options["check_switcher"] = False
 html_theme_options["show_version_warning_banner"] = True
 html_theme_options["navbar_start"] = ["navbar-logo", "version-switcher"]
 html_theme_options["navbar_end"] = ["version-switcher", *html_theme_options["navbar_end"]]
+html_theme_options["footer_start"] = ["copyright", "docs-version", "sphinx-version"]
 html_css_files = [*html_css_files, "css/version-switcher.css"]
+
+
+def _add_version_meta(app, pagename, templatename, context, doctree):
+    context["metatags"] = context.get("metatags", "") + f'<meta name="docsearch:version" content="{{release}}" />\\n'
+
+
+_setup_of_release = globals().get("setup")
+
+
+def setup(app):
+    app.connect("html-page-context", _add_version_meta)
+    if _setup_of_release is not None:
+        return _setup_of_release(app)
 """
 
 # Page written to the former location of a page, see write_redirects
@@ -181,6 +195,7 @@ def prepare(version, spec, source):
             version=version, release=release_of(source), baseurl=f"{SITE_URL}en/{version}/"
         )
         shutil.copy2(DOCS_DIR / "source" / "_static" / "css" / "version-switcher.css", docs_source / "_static" / "css")
+        shutil.copy2(DOCS_DIR / "source" / "_templates" / "docs-version.html", docs_source / "_templates")
         # Releases 0.8 and 0.9 link the notebook of a tutorial from the root of the website
         sidebar = docs_source / "_templates" / "dynamic_sidebar.html"
         if sidebar.exists():

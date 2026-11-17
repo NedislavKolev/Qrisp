@@ -26,6 +26,32 @@ result. Always verify that pages render correctly before submitting a pull
 request — formatting that looks fine in raw reStructuredText may not render
 well in Sphinx.
 
+Documentation of all versions
+-----------------------------
+
+The website hosts the documentation of every release and of the development
+version. ``qrisp.eu/en/latest/`` is built from ``main``, and
+``qrisp.eu/en/<version>/``, for example ``qrisp.eu/en/0.9/``, from the git tag
+of a release. ``qrisp.eu`` itself redirects to the newest release.
+
+``make html`` builds only your checkout. To build the whole website into
+``documentation/build/site``, run ``make versions``, which needs
+`uv <https://docs.astral.sh/uv/>`_ and ``pandoc``. The workflow
+``.github/workflows/docs_site.yml`` does the same on every push to ``main`` and
+uploads the website as the artifact ``docs-site``. ``documentation/README.md``
+explains how the versions are built.
+
+When a new version is released, for example 0.10, add it to the website after
+its git tag has been created:
+
+#. Add a table ``[versions."0.10"]`` to ``documentation/versions/versions.toml``,
+   following the comments in that file.
+#. In ``documentation``, run ``python build_versions.py lock 0.10``. This pins the
+   dependencies of the release in ``documentation/versions/0.10.lock``.
+#. Set ``stable = "0.10"`` in ``documentation/versions/versions.toml``, so that
+   ``qrisp.eu`` redirects to the new release.
+#. Commit both files.
+
 Docstrings
 ----------
 

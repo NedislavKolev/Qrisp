@@ -889,7 +889,10 @@ Development
   The new ``documentation/build_versions.py`` (``make versions``) builds every
   version listed in ``documentation/versions/versions.toml``, each release from
   its git tag with the dependencies pinned as of its release, and assembles
-  the website, including redirects from the former locations of the pages
+  the website, including redirects from the former locations of the pages.
+  The workflow ``docs_site.yml`` builds the website on every push to ``main``
+  and uploads it as an artifact, and the Development Guide describes how to
+  add a release to it
   (`Issue #818 <https://github.com/eclipse-qrisp/Qrisp/issues/818>`_).
 
 Dependency Upgrades
