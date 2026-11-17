@@ -227,8 +227,8 @@ if docs_version:
     html_theme_options["show_version_warning_banner"] = True
     # Next to the logo, the only place where the header has room left for it.
     # Narrow screens have no room there either, so a second copy is added to
-    # navbar_end, whose items also appear in the navigation drawer. custom09.css
-    # hides the copy that does not apply.
+    # navbar_end, whose items also appear in the navigation drawer.
+    # version-switcher.css hides the copy that does not apply.
     html_theme_options["navbar_start"] = ["navbar-logo", "version-switcher"]
     html_theme_options["navbar_end"] = ["version-switcher", "navbar-icon-links"]
 
@@ -276,6 +276,8 @@ add_module_names = False
 html_css_files = [
     "css/custom09.css",
 ]
+if docs_version:
+    html_css_files.append("css/version-switcher.css")
 
 source_suffix = [".rst"]
 # Adds 'Edit on gitlab' in the upper right corner

@@ -10,6 +10,9 @@ if "%SPHINXBUILD%" == "" (
 set SOURCEDIR=source
 set BUILDDIR=build
 
+REM Build the documentation of every version, see README.md
+if "%1" == "versions" goto versions
+
 %SPHINXBUILD% >NUL 2>NUL
 if errorlevel 9009 (
 	echo.
@@ -33,3 +36,12 @@ goto end
 
 :end
 popd
+goto :eof
+
+REM The exit code is passed on at the top level: "cmd /c" loses it when the
+REM batch file exits from within a block.
+:versions
+python build_versions.py build
+set EXITCODE=%ERRORLEVEL%
+popd
+exit /b %EXITCODE%

@@ -1,0 +1,22 @@
+/* Version switcher of the multi-version site.
+
+   The switcher is added twice: next to the logo and to the items at the end of
+   the header, which also appear in the navigation drawer. From 1200px on the
+   column of the logo is wide enough for it. Below that the copy at the end of
+   the header is shown instead, and below 960px, where the theme moves those
+   items into the drawer, the copy there.
+
+   This file is only loaded by builds of the multi-version site: conf.py adds it
+   when QRISP_DOCS_VERSION is set, and build_versions.py adds it to releases
+   that predate that setting. */
+@media (min-width: 1200px) {
+  .bd-header .navbar-header-items__end .navbar-item:has(.version-switcher__container) {
+    display: none;
+  }
+}
+
+@media (max-width: 1199.98px) {
+  .bd-header .navbar-header-items__start .navbar-item:has(.version-switcher__container) {
+    display: none;
+  }
+}

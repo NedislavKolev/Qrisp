@@ -1,0 +1,94 @@
+# Versions of the Qrisp documentation that build_versions.py builds and assembles
+# into one website. See documentation/README.md.
+#
+# The versions appear in the version switcher in the order they are listed here.
+
+# The release the root of the website redirects to. The version switcher marks
+# it as "stable", and every other version shows a banner that links to it.
+stable = "0.9"
+
+# The development version. It is built from the checkout itself, with the
+# dependencies that `make docs-install` installs:
+#   python   Python version of the build environment
+#   extras   extras of pyproject.toml to install
+#   no_deps  requirement files of the checkout to install without their
+#            dependencies
+[versions.latest]
+python = "3.12"
+extras = ["docs", "xdsl"]
+no_deps = ["documentation/requirements-cudaq.txt"]
+
+# Releases. Each is built from the git tag of the same name, in an environment
+# installed from <version>.lock in this directory. The keys `resolved`, `extras`
+# and `packages` are the input of that lock file, which is written by
+# `python build_versions.py lock <version>`:
+#   python    Python version of the build environment
+#   resolved  the dependencies are resolved as they were on this date, the day
+#             after the release
+#   extras    extras of the release that declare its documentation dependencies
+#   packages  further requirements. The releases up to 0.8 list their
+#             documentation dependencies unpinned in documentation/extensions.bat,
+#             and some releases import packages they do not declare.
+# A release can also set `no_deps`, as above, `execute_notebooks = false` to
+# render its notebooks without executing those that have no stored output, and
+# `tag` if its git tag is not named like the version.
+
+[versions."0.9"]
+python = "3.12"
+resolved = "2026-06-23"
+extras = ["docs"]
+
+[versions."0.8"]
+python = "3.12"
+resolved = "2026-02-21"
+packages = [
+    # Sphinx 9 is incompatible with sphinx_toolbox.sidebar_links
+    "sphinx<9", "sphinx_toolbox", "myst_parser", "texext", "numpydoc", "pydata_sphinx_theme", "nbsphinx",
+    "sphinx-sitemap", "sphinx-copybutton", "sphinx-design", "sphinx-thebe", "sphinx-new-tab-link",
+    "ipykernel", "setuptools", "stim",
+]
+
+[versions."0.7"]
+python = "3.11"
+resolved = "2025-05-17"
+packages = [
+    "sphinx", "sphinx_toolbox", "myst_parser", "texext", "numpydoc", "pydata_sphinx_theme", "nbsphinx",
+    "sphinx-sitemap", "sphinx-copybutton", "sphinx-design", "sphinx-thebe",
+    "setuptools",
+]
+
+[versions."0.6"]
+python = "3.11"
+resolved = "2025-02-06"
+packages = [
+    "sphinx", "sphinx_toolbox", "myst_parser", "texext", "numpydoc", "pydata_sphinx_theme", "nbsphinx",
+    "sphinx-sitemap", "sphinx-copybutton", "sphinx-design", "sphinx-thebe",
+    "setuptools",
+]
+
+[versions."0.5"]
+python = "3.11"
+resolved = "2024-11-20"
+packages = [
+    "sphinx", "sphinx_toolbox", "myst_parser", "texext", "numpydoc", "pydata_sphinx_theme", "nbsphinx",
+    "sphinx-sitemap", "sphinx-copybutton", "sphinx-design", "sphinx-thebe",
+    "setuptools", "psutil",
+]
+
+[versions."0.4"]
+python = "3.10"
+resolved = "2024-01-25"
+packages = [
+    "sphinx", "sphinx_toolbox", "myst_parser", "texext", "numpydoc", "pydata_sphinx_theme", "nbsphinx",
+    "sphinx-sitemap", "sphinx-copybutton", "sphinx-design", "sphinx-thebe",
+    "setuptools", "psutil", "qiskit_ibm_runtime",
+]
+
+[versions."0.3"]
+python = "3.10"
+resolved = "2023-10-07"
+packages = [
+    "sphinx", "sphinx_toolbox", "myst_parser", "texext", "numpydoc", "pydata_sphinx_theme", "nbsphinx",
+    "sphinx-sitemap", "sphinx-copybutton", "sphinx-design", "sphinx-thebe",
+    "setuptools", "qiskit_ibm_runtime",
+]

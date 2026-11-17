@@ -885,7 +885,11 @@ Development
   release, and uses ``https://qrisp.eu/en/<version>/`` as its base URL. The
   notebook download link is now relative, and the links to tutorials in the
   ``.rst`` pages and docstrings are internal references, so they stay within
-  the version they belong to. The sitemap no longer lists malformed URLs
+  the version they belong to. The sitemap no longer lists malformed URLs.
+  The new ``documentation/build_versions.py`` (``make versions``) builds every
+  version listed in ``documentation/versions/versions.toml``, each release from
+  its git tag with the dependencies pinned as of its release, and assembles
+  the website, including redirects from the former locations of the pages
   (`Issue #818 <https://github.com/eclipse-qrisp/Qrisp/issues/818>`_).
 
 Dependency Upgrades

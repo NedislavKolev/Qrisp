@@ -21,7 +21,12 @@ docs-install:
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-.PHONY: docs-install help Makefile
+# Build the documentation of every version listed in versions/versions.toml and
+# assemble the website in build/site. Requires uv and pandoc, see README.md.
+versions:
+	python build_versions.py build
+
+.PHONY: docs-install help versions Makefile
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
