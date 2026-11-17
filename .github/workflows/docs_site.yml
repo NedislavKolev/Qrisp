@@ -10,6 +10,7 @@ on:
   push:
     branches:
       - main
+      - Build-and-host-documentation-for-all-released-Qrisp-versions-+-development-version
   pull_request:
     types:
       - opened
