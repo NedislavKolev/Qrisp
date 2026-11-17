@@ -892,8 +892,9 @@ Development
   the website, including redirects from the former locations of the pages.
   The workflow ``docs_site.yml`` builds the website on every push to ``main``
   and uploads it as an artifact, and the Development Guide describes how to
-  add a release to it
-  (`Issue #818 <https://github.com/eclipse-qrisp/Qrisp/issues/818>`_).
+  add a release to it. Every documented function, class and method added after
+  0.3 is now labeled with the release that added it, determined from the source
+  code of the releases (`Issue #818 <https://github.com/eclipse-qrisp/Qrisp/issues/818>`_).
 
 Dependency Upgrades
 -------------------

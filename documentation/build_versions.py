@@ -26,6 +26,7 @@ Usage, from the ``documentation`` directory::
     python build_versions.py build latest 0.9  # build only these versions, then assemble
     python build_versions.py assemble          # only write the files shared by all versions
     python build_versions.py lock 0.10         # pin the dependencies of a release
+    python build_versions.py api               # record the release that added each name of the API
 
 The website is written to ``build/site``. Building requires ``uv`` and ``pandoc``.
 See ``README.md`` for details.
@@ -39,6 +40,7 @@ import os
 import posixpath
 import shutil
 import subprocess
+import sys
 import tarfile
 import tomllib
 from pathlib import Path
@@ -47,6 +49,8 @@ from urllib.parse import quote
 DOCS_DIR = Path(__file__).resolve().parent
 REPO_DIR = DOCS_DIR.parent
 VERSIONS_DIR = DOCS_DIR / "versions"
+# The release that added each name of the API, see write_api_table
+API_TABLE = VERSIONS_DIR / "api.json"
 
 # The two constants below must match source/conf.py.
 # Root of the website. A version is hosted at SITE_URL + "en/<version>/".
@@ -138,12 +142,28 @@ def export_source(version, spec, source):
             shutil.copytree(REPO_DIR / name, source / name, ignore=ignored)
         shutil.copy2(REPO_DIR / "pyproject.toml", source)
     else:
-        tag = spec.get("tag", version)
-        archive = subprocess.run(
-            ["git", "-C", str(REPO_DIR), "archive", "--format=tar", tag], check=True, stdout=subprocess.PIPE
-        )
-        with tarfile.open(fileobj=io.BytesIO(archive.stdout)) as tar:
+        with release_archive(version, spec) as tar:
             tar.extractall(source, filter="data")
+
+
+def release_archive(version, spec):
+    """Open the source of a release, read from its git tag, as a tar archive."""
+    tag = spec.get("tag", version)
+    # Forks and shallow clones may lack the tags of the releases
+    found = subprocess.run(
+        ["git", "-C", str(REPO_DIR), "rev-parse", "--verify", "--quiet", f"refs/tags/{tag}"],
+        check=False,
+        stdout=subprocess.DEVNULL,
+    )
+    if found.returncode != 0:
+        raise SystemExit(
+            f"{version}: the git tag {tag} is missing. Fetch the tags of the releases, for example with: "
+            "git fetch --tags https://github.com/eclipse-qrisp/Qrisp.git"
+        )
+    archive = subprocess.run(
+        ["git", "-C", str(REPO_DIR), "archive", "--format=tar", tag], check=True, stdout=subprocess.PIPE
+    )
+    return tarfile.open(fileobj=io.BytesIO(archive.stdout))
 
 
 def release_of(source):
@@ -219,7 +239,10 @@ def create_environment(version, spec, source, venv):
     else:
         if not lock_file(version).exists():
             raise SystemExit(f"{lock_file(version)} is missing, run: python build_versions.py lock {version}")
-        run(*install, "-r", lock_file(version))
+        # The date also applies to the build dependencies of packages that have
+        # no wheel: ibm-cloud-sdk-core, pinned by 0.3 and 0.4, needs a setuptools
+        # that still contains pkg_resources.
+        run(*install, "-r", lock_file(version), "--exclude-newer", spec["resolved"])
     for requirements in spec.get("no_deps", []):
         run(*install, "--no-deps", "-r", source / requirements)
     return python
@@ -259,6 +282,33 @@ def build(version, spec, work, output):
         destination,
         env=environment,
     )
+
+
+def write_api_table(manifest):
+    """Write ``versions/api.json``: the release that added each name of the API.
+
+    The names are read from the source code of every release listed in
+    ``versions/versions.toml``. The extension ``source/_ext/api_versions.py``
+    uses the table to label the documented objects.
+    """
+    sys.path.insert(0, str(DOCS_DIR / "source" / "_ext"))
+    from api_versions import defined_names, version_key
+
+    releases = sorted((version for version in manifest["versions"] if version != DEV_VERSION), key=version_key)
+    first_release = {}
+    for version in releases:
+        names = set()
+        with release_archive(version, manifest["versions"][version]) as tar:
+            for member in tar:
+                if member.isfile() and member.name.startswith("src/qrisp/") and member.name.endswith(".py"):
+                    names |= defined_names(tar.extractfile(member).read())
+        added = names - first_release.keys()
+        print(f"{version}: {len(names)} names, {len(added)} of them added in this release")
+        first_release.update(dict.fromkeys(added, version))
+
+    table = {"releases": releases, "first_release": dict(sorted(first_release.items()))}
+    API_TABLE.write_text(json.dumps(table, indent=1) + "\n", encoding="utf-8")
+    print(f"{API_TABLE} written")
 
 
 def write_redirects(output, versions):
@@ -337,12 +387,16 @@ def main():
         command = commands.add_parser(name, help=description)
         command.add_argument("versions", nargs="*", help="versions listed in versions/versions.toml")
     commands.add_parser("assemble", help="write the files shared by all versions")
+    commands.add_parser("api", help="write versions/api.json, the release that added each name of the API")
     arguments = parser.parse_args()
 
     manifest = load_manifest()
     output, work = arguments.output.resolve(), arguments.work.resolve()
     if arguments.command == "assemble":
         assemble(manifest, output)
+        return
+    if arguments.command == "api":
+        write_api_table(manifest)
         return
 
     unknown = [version for version in arguments.versions if version not in manifest["versions"]]

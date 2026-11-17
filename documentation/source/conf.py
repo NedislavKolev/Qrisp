@@ -102,6 +102,8 @@ extensions = [
     "sphinx_design",
     "sphinx_thebe",
     "tutorial_authors",
+    # Labels each documented object with the release that added it, see _ext/api_versions.py
+    "api_versions",
 ]
 
 # Configure sphinx-copybutton to only copy input lines (with >>> prompts) and strip the prompts

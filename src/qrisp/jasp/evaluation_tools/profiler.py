@@ -493,8 +493,10 @@ def num_qubits(
         A callable must take a JAX PRNG key as input and return a boolean.
 
     max_allocations : int, optional
-        Deprecated and ignored. The number of allocation/deallocation events is no longer
-        bounded. Passing a value emits a ``QrispDeprecationWarning``.
+        .. deprecated:: 0.10
+
+            Ignored. The number of allocation/deallocation events is no longer
+            bounded. Passing a value emits a ``QrispDeprecationWarning``.
 
     callback_threshold : int or None, optional
         For very large algorithms, compile time can blow up due to aggressively

@@ -48,9 +48,40 @@ its git tag has been created:
    following the comments in that file.
 #. In ``documentation``, run ``python build_versions.py lock 0.10``. This pins the
    dependencies of the release in ``documentation/versions/0.10.lock``.
+#. In ``documentation``, run ``python build_versions.py api``. This records in
+   ``documentation/versions/api.json`` which functions, classes and methods the
+   release added, see :ref:`version_labels`.
 #. Set ``stable = "0.10"`` in ``documentation/versions/versions.toml``, so that
    ``qrisp.eu`` redirects to the new release.
-#. Commit both files.
+#. Commit the three files.
+
+.. _version_labels:
+
+Version labels
+--------------
+
+Every documented function, class and method that was added after Qrisp 0.3
+carries a label such as "Added in version 0.8". Do not write these labels
+yourself: the extension ``documentation/source/_ext/api_versions.py`` inserts
+them while the documentation is built, based on the table
+``documentation/versions/api.json``. Something you add is labeled with the
+upcoming release, for example 0.10 while the development version is 0.9.x.
+
+Two labels are written by hand, with the upcoming release as their version:
+
+- When you deprecate a function, class or method, emit a
+  ``QrispDeprecationWarning`` and add a ``deprecated`` directive that names the
+  replacement to its docstring:
+
+  .. code-block:: rst
+
+      .. deprecated:: 0.10
+
+          ``RGate`` is deprecated, use :class:`PRXGate` instead.
+
+- When the behavior of an existing function, class or method changes in a way
+  its users must know about, add a ``versionchanged`` directive that explains
+  the change.
 
 Docstrings
 ----------

@@ -49,6 +49,12 @@ def qswitch(operand, case, case_function, method="auto", case_amount=None, inv=F
     r"""Executes a switch - case statement distinguishing between a list of
     given in-place functions.
 
+    .. deprecated:: 0.8
+
+        The interface ``qswitch(operand, case, case_function)`` is deprecated and
+        will be removed in a future release. Use
+        :func:`q_switch(index, branches, *operands) <qrisp.jasp.q_switch>` instead.
+
     More precisely, the qswitch applies the unitary $U_i$ to the operand in state $\ket{\psi}$ given that the case variable is in state $\ket{i}$, i.e.,
 
     .. math::

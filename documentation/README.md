@@ -70,6 +70,11 @@ How it works:
   `QRISP_DOCS_VERSION`, which `source/conf.py` reads. The releases up to 0.9 do
   not read it yet, so the script appends the settings to the copy of their
   `conf.py`.
+- The documented objects are labeled with the release that added them
+  ("Added in version 0.8") by the extension `source/_ext/api_versions.py`. It
+  reads `versions/api.json`, which `python build_versions.py api` writes from
+  the source code of the releases listed in `versions/versions.toml`. The build
+  warns if the table lacks one of these releases.
 - At the root of the website the script writes `versions.json` for the version
   switcher, the files of `source/_extra`, and a page that redirects to the
   newest release at every location a page had before the website hosted several
@@ -80,7 +85,8 @@ After tagging a release, for example 0.10:
 1. Add a table `[versions."0.10"]` to `versions/versions.toml`, following the
    comments there.
 2. Run `python build_versions.py lock 0.10` and commit `versions/0.10.lock`.
-3. Set `stable = "0.10"` in `versions/versions.toml`.
+3. Run `python build_versions.py api` and commit `versions/api.json`.
+4. Set `stable = "0.10"` in `versions/versions.toml`.
 
 The same steps are in the Development Guide of the documentation. If a release
 is later patched, for example as 0.10.1, set `tag = "0.10.1"` in its table, so
